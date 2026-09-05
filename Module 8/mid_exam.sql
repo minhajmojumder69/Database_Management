@@ -46,3 +46,51 @@ FROM employees
 JOIN departments ON employees.department_id = departments.department_id
 GROUP BY departments.department_name;
 
+-- INNER JOIN shows the result if both tables matched
+SELECT employees.first_name,departments.department_name
+FROM employees
+INNER JOIN departments ON employees.department_id = departments.department_id
+
+-- LEFT JOIN shows all of the results of left table even if right table is null
+SELECT employees.first_name,departments.department_name
+FROM employees
+LEFT JOIN departments ON employees.department_id = departments.department_id
+
+-- LEFT JOIN shows all of the results of right table even if laft table is null
+SELECT employees.first_name,departments.department_name
+FROM employees
+RIGHT JOIN departments ON employees.department_id = departments.department_id
+
+-- CROSS JOIN shows the cartesian products of both tables.
+SELECT employees.first_name,departments.department_name
+FROM employees
+CROSS JOIN departments ON employees.department_id = departments.department_id
+
+
+SELECT first_name,last_name
+FROM employees
+WHERE salary < (
+                SELECT salary
+                FROM employees
+                WHERE first_name = 'Steven' AND last_name = 'King'
+)
+
+SELECT DISTINCT departments.department_name, employees.first_name
+FROM departments
+JOIN employees ON departments.manager_id = employees.employee_id
+GROUP BY departments.department_name;
+
+
+SELECT locations.city , departments.department_name
+FROM departments
+JOIN locations ON departments.location_id = locations.location_id;
+
+WITH avgit AS
+(
+    SELECT AVG(salary) AS avgs
+    FROM employees
+)
+SELECT *
+FROM employees
+WHERE salary > (SELECT avgs FROM avgit)
+
